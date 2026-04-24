@@ -77,8 +77,8 @@ def attribute(mol, smi: str, iupac_name: str, decimal = 2):
         'HBA_Count': Lipinski.NumHAcceptors(mol),
         'HBD_Count': Lipinski.NumHDonors(mol),
         'Aromatic_Ring_Count': rdMolDescriptors.CalcNumAromaticRings(mol),
-        'Halogen_Count': ", ".join(f"{h} ({sum(a.GetSymbol()==h for a in mol.GetAtoms())})" for h in halogens),# if any(a.GetSymbol()==h for a in mol.GetAtoms())
-        'Functional_Group_Count': ", ".join(f"{k} ({len(mol.GetSubstructMatches(v))})" for k, v in pats.items())# if mol.HasSubstructMatch(v)
+        'Halogen_Count': ", ".join(f"{h} ({sum(a.GetSymbol()==h for a in mol.GetAtoms())})" for h in halogens),
+        'Functional_Group_Count': ", ".join(f"{k} ({len(mol.GetSubstructMatches(v))})" for k, v in pats.items())
     }
 
     return _dict

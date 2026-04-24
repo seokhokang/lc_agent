@@ -50,7 +50,7 @@ scholarly_search_agent = create_agent(
 
 reflection_agent = create_agent(
     model = base_llm,
-    tools = [web_search_tool, smiles_expand, iupac_expand],
+    tools = [web_search_tool, extraction_tool, smiles_expand, iupac_expand],
     system_prompt = prompt.REFLECTION_PROMPT,
     name = "Reflection Agent"
 )

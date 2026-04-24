@@ -21,14 +21,13 @@ async def compound_level_analysis(reaction_attr, constraint, max_iter = 1):
         msg_reflect = [HumanMessage(
             content = f"Compound:\n{json_to_str(compound_attr)}" + "\n\n\n"
                     + f"Constraints:\n{constraint}" + "\n\n\n"
-                    + f"LC-MS Condition:\n{json_to_str(cond)}"
+                    + f"LC Condition:\n{json_to_str(cond)}"
         )]
                 
         for i in range(max_iter): 
             reflection = await a_call_agent("reflect", msg_reflect, to_json = False)
             reflection = str(reflection)
             
-            #print(i+1, len(reflection), reflection[:50])
             if len(reflection) < 10:
                 print(f"::: (reflection iter {i+1}) No reflection needed for the condition {key} on {compound_attr['IUPAC_Name']}.")
                 break
@@ -36,7 +35,7 @@ async def compound_level_analysis(reaction_attr, constraint, max_iter = 1):
             msg_evolve = [HumanMessage(
                 content = f"Compound:\n{json_to_str(compound_attr)}" + "\n\n\n"
                         + f"Constraints:\n{constraint}" + "\n\n\n"
-                        + f"LC-MS Condition:\n{json_to_str(cond)}" + "\n\n\n"
+                        + f"LC Condition:\n{json_to_str(cond)}" + "\n\n\n"
                         + f"Reflection:\n{reflection}"
             )]
             cond = await a_call_agent("evolve", msg_evolve, to_json = True)
@@ -44,7 +43,7 @@ async def compound_level_analysis(reaction_attr, constraint, max_iter = 1):
             
             msg_reflect.extend([
                 AIMessage(content = f"Reflection:\n{reflection}"),
-                HumanMessage(content = f"Refined LC-MS Condition:\n{json_to_str(cond)}")
+                HumanMessage(content = f"Refined LC Condition:\n{json_to_str(cond)}")
             ])
 
         print(f"::: reflect and evolve agents refined the condition {key} on {compound_attr['IUPAC_Name']}.")
@@ -88,11 +87,10 @@ async def compound_level_analysis(reaction_attr, constraint, max_iter = 1):
                 compound_generate_refine(compound_attr, "generate", max_iter),
                 compound_generate_refine(compound_attr, "web_search", max_iter)
             )
-            #cond_G = await compound_generate_refine(compound_attr, "generate")
             
             return cond_G | cond_S
 
-    print('\n--- Stage 1. Compound-Level Analysis')
+    print('--- Stage 1. Compound-Level Analysis')
     
     conds = await asyncio.gather(
         *[compound_main(attr) for attr in reaction_attr.values()]
@@ -110,10 +108,10 @@ async def reaction_level_analysis(reaction_attr, compound_cond, constraint):
     def cond_to_block(cond):
         return "\n\n".join([f"{i+1}. Condition ID: {c_id}\n{json_to_str(c_cond)}" for i, (c_id, c_cond) in enumerate(cond.items())]) 
     
-    print('\n--- Stage 2. Reaction-Level Analysis')
+    print('--- Stage 2. Reaction-Level Analysis')
 
     # Integration Agent
-    cond_blocks = [f"LC-MS Conditions for {key} [{key[0]}{key.split(' ')[1]}] ({reaction_attr[key]['IUPAC_Name']}):\n\n{cond_to_block(cond)}" for (key, cond) in compound_cond.items()]
+    cond_blocks = [f"LC Conditions for {key} [{key[0]}{key.split(' ')[1]}] ({reaction_attr[key]['IUPAC_Name']}):\n\n{cond_to_block(cond)}" for (key, cond) in compound_cond.items()]
 
     msg_integrate = [HumanMessage(
         content = f"Reaction:\n{json_to_str(reaction_attr)}" + "\n\n\n"
@@ -138,14 +136,13 @@ async def reaction_level_update(reaction_attr, reaction_cond, constraint, max_it
         msg_reflect = [HumanMessage(
             content = f"Reaction:\n{json_to_str(reaction_attr)}" + "\n\n\n"
                     + f"Constraints:\n{constraint}" + "\n\n\n"
-                    + f"LC-MS Condition:\n{json_to_str(cond)}"
+                    + f"LC Condition:\n{json_to_str(cond)}"
         )]
           
         for i in range(max_iter):
             reflection = await a_call_agent("reflect", msg_reflect, to_json = False)
             reflection = str(reflection)
             
-            #print(i+1, len(reflection), reflection[:50])
             if len(reflection) < 10:
                 print(f"::: (reflection iter {i+1}) No reflection needed for the condition {key}.")
                 break
@@ -153,7 +150,7 @@ async def reaction_level_update(reaction_attr, reaction_cond, constraint, max_it
             msg_evolve = [HumanMessage(
                 content = f"Reaction:\n{json_to_str(reaction_attr)}" + "\n\n\n"
                         + f"Constraints:\n{constraint}" + "\n\n\n"
-                        + f"LC-MS Condition:\n{json_to_str(cond)}" + "\n\n\n"
+                        + f"LC Condition:\n{json_to_str(cond)}" + "\n\n\n"
                         + f"Reflection:\n{reflection}"
             )]
             cond = await a_call_agent("evolve", msg_evolve, to_json = True)
@@ -161,14 +158,14 @@ async def reaction_level_update(reaction_attr, reaction_cond, constraint, max_it
             
             msg_reflect.extend([
                 AIMessage(content = f"Reflection:\n{reflection}"),
-                HumanMessage(content = f"Refined LC-MS Condition:\n{json_to_str(cond)}")
+                HumanMessage(content = f"Refined LC Condition:\n{json_to_str(cond)}")
             ])
         
         print(f"::: reflect and evolve agents refined the condition {key}.")
         
         return cond
 
-    print('\n--- Stage 2-1. Reaction-Level Update')
+    print('--- Stage 2-1. Reaction-Level Update')
 
     # Reflection and Evolution Agents
     keys = reaction_cond.keys()
@@ -183,7 +180,7 @@ async def reaction_level_update(reaction_attr, reaction_cond, constraint, max_it
     msg_review = [HumanMessage(
         content = f"Reaction:\n{json_to_str(reaction_attr)}" + "\n\n\n"
                 + f"Constraints:\n{constraint}" + "\n\n\n"
-                + f"LC-MS Conditions:\n{json_to_str(reaction_cond)}"
+                + f"LC Conditions:\n{json_to_str(reaction_cond)}"
     )]
     reaction_cond_score = call_agent("metareview", msg_review, to_json = True)
     print(f"::: Meta-Review & Ranking is done!")
@@ -208,7 +205,7 @@ def create_report(reaction_attr, compound_cond, reaction_cond, constraint, top_k
         else:
             return ref
 
-    print('\n--- Stage 3. Report Generation')
+    print('--- Stage 3. Report Generation')
     reaction_cond = dict(
         sorted(list(reaction_cond.items()), key=lambda x: x[1]['Rank'])[:top_k]
     )
@@ -218,13 +215,13 @@ def create_report(reaction_attr, compound_cond, reaction_cond, constraint, top_k
     msg_report = [HumanMessage(
         content = f"Reaction:\n{json_to_str(reaction_attr)}" + "\n\n\n"
                 + f"Constraints:\n{constraint}" + "\n\n\n"
-                + f"LC-MS Conditions:\n{json_to_str(reaction_cond)}"
+                + f"LC Conditions:\n{json_to_str(reaction_cond)}"
     )]
     summary_text = call_agent("report", msg_report, to_json = False)
     print(f"::: Report is generated!")
 
     out = []
-    out.append('LC-MS Condition Recommendation Report')
+    out.append('LC Condition Recommendation Report')
     out.append('=============\n')
     
     out.append('\n### Target Reaction\n')
@@ -236,10 +233,10 @@ def create_report(reaction_attr, compound_cond, reaction_cond, constraint, top_k
     out.append(('> - ' + constraint.strip().replace('\n','\n> - ')).replace('> - -', '> -'))
     out.append('\n---\n')
     
-    out.append('\n## Recommended LC-MS Conditions\n')
+    out.append('\n## Recommended LC Conditions\n')
     out.append("| | " + " | ".join(f"Condition {k} (Rank {str(reaction_cond[k]['Rank'])})" for k in reaction_cond.keys()) + " |")
     out.append("| --- | " + " | ".join("---" for _ in reaction_cond.keys()) + " |")
-    for col in ['Retention_Time', 'Column', 'Mobile_Phase', 'Flow_Rate', 'Injection_Volume', 'Elution', 'Detector', 'MS_Parameters']:
+    for col in ['Retention_Time', 'Column', 'Mobile_Phase', 'Flow_Rate', 'Injection_Volume', 'Elution', 'Detector']:
         out.append(f"| <b>{col.replace('_', ' ')}</b> | " + " | ".join(str(reaction_cond[k][col]).replace(';', ';<br>') for k in reaction_cond.keys()) + " |")
     out.append("| <b>Ref</b> | " + " | ".join(";<br>".join([f"{idx.strip()} ({ref_to_link(compound_cond_flatten[idx.strip()]['Ref'])})" for idx in reaction_cond[k]["Ref"].split(",")]) for k in reaction_cond.keys()) + " |")
     out.append('\n---\n')

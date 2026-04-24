@@ -57,8 +57,8 @@ async def init_node(state, config):
     yield "[M]⏳ ... Report Generation ..."
     summary_text, md_html = create_report(state['reaction'], state['compound_cond'], state['reaction_cond'], state['constraint'])
     state['message'].extend([
-        AIMessage(content = f"LC-MS Condition for Individual Components:\n{json_to_str(state['compound_cond'])}" + "\n\n\n"
-                          + f"LC-MS Condition for Reaction:\n{json_to_str(state['reaction_cond'])}" + "\n\n\n"
+        AIMessage(content = f"LC Condition for Individual Components:\n{json_to_str(state['compound_cond'])}" + "\n\n\n"
+                          + f"LC Condition for Reaction:\n{json_to_str(state['reaction_cond'])}" + "\n\n\n"
                           + f"Summary Report:\n{summary_text}"
         )
     ])    
@@ -68,9 +68,6 @@ async def init_node(state, config):
     os.makedirs(os.path.join(state['save_dir'], thread_id), exist_ok=True)
     with open(os.path.join(state['save_dir'], thread_id, "output_init.html"), "w", encoding="utf-8") as f:
         f.write(md_html)
-    
-    #with open(os.path.join(state['save_dir'], thread_id, "data.pkl"), "wb") as f:
-    #    pkl.dump([state['compound_cond'], state['reaction_cond']], f)
     
     yield state
 
@@ -89,7 +86,7 @@ async def update_node(state, config):
     summary_text, md_html = create_report(state['reaction'], state['compound_cond'], state['reaction_cond'], state['constraint'])
     state['message'].extend([
         AIMessage(content = "Updated!\n\n" 
-                          + f"LC-MS Condition for Reaction:\n{json_to_str(state['reaction_cond'])}" + "\n\n\n"
+                          + f"LC Condition for Reaction:\n{json_to_str(state['reaction_cond'])}" + "\n\n\n"
                           + f"Summary Report:\n{summary_text}"
         )
     ])

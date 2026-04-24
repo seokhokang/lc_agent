@@ -66,7 +66,7 @@ async def start_fn(rsmi, constraint, thread_id):
     intermediate = ""
     async for event in result:
         if event['event'] == 'on_chain_stream' and "chunk" in event["data"]:
-            if not isinstance(event['data']['chunk'], dict) and event['data']['chunk'].startswith("[M]"):
+            if not isinstance(event['data']['chunk'], (dict, list)) and event['data']['chunk'].startswith("[M]"):
                 print("MESSAGE:", event['data']['chunk'])
                 intermediate += "\n" + event['data']['chunk'][3:]
                 yield (
@@ -121,7 +121,7 @@ async def chat_fn(message, chat_history, thread_id):
     generated = ""
     async for event in result:
         if event['event'] == 'on_chain_stream' and "chunk" in event["data"]:
-            if not isinstance(event['data']['chunk'], dict) and event['data']['chunk'].startswith("[M]"):
+            if not isinstance(event['data']['chunk'], (dict, list)) and event['data']['chunk'].startswith("[M]"):
                 print("MESSAGE:", event['data']['chunk'])
                 intermediate += "\n" + event['data']['chunk'][3:]
                 yield (
@@ -150,7 +150,6 @@ async def chat_fn(message, chat_history, thread_id):
         )
         
     elif status == 'chat':
-        #print('check', event['data']['output']['message'][-1].content)
         yield (
             gr.update(value="", interactive=True),
             chat_history + [gr.ChatMessage(role="user", content=message), gr.ChatMessage(role="assistant", content=generated)],
@@ -170,7 +169,7 @@ with gr.Blocks(fill_width=True, fill_height=True) as demo:
                 start_btn = gr.Button("Start")
                 clear_btn = gr.Button("Reset")
 
-            chatbot = gr.Chatbot(scale=1, height='45vh')#buttons=[])
+            chatbot = gr.Chatbot(scale=1, height='45vh')
             chatbox = gr.Textbox(lines=1, max_lines=4, show_label=False, placeholder="Type a message...", interactive=False, submit_btn=True)
 
         # RIGHT SIDE
@@ -180,7 +179,7 @@ with gr.Blocks(fill_width=True, fill_height=True) as demo:
         start_btn.click(
             fn=start_fn,
             inputs=[input_rsmi, input_const, thread_state],
-            outputs=[chatbox, chatbot, html_view]#input_rsmi, input_const, 
+            outputs=[chatbox, chatbot, html_view]
         )
         
         clear_btn.click(
@@ -196,4 +195,5 @@ with gr.Blocks(fill_width=True, fill_height=True) as demo:
         )
         
 
-demo.launch(server_name="115.145.162.40", share=True)
+
+demo.launch(share=True)

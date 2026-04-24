@@ -1,8 +1,6 @@
 <div align="center">
 <h1>
-LC–MS Agent: Towards AI-Driven
-Recommendation of LC–MS Conditions for
-Chemical Reactions
+LC Agent: Towards AI-Driven Recommendation of Liquid Chromatography Conditions for Chemical Reactions
 </h1>
 
 
@@ -28,10 +26,8 @@ Youngchun Kwon†‡ · Hyukju Kwon†‡ · Jinju Park¶ · Youn-Suk Choi*‡ �
 </div>
 <div align="left">
 <br/>
-This repository is the official Pytorch implementation code of our <strong>"LC–MS Agent: Towards AI-Driven
-Recommendation of LC–MS Conditions for
-Chemical Reactions - Youngchun Kwon, Hyukju Kwon, Jinju Park, Youn-Suk Choi, and Seokho
-Kang".</strong> Our LC–MS Agent system is an LLM-based multi-agent framework that automatically recommends reaction-level LC–MS conditions given a chemical reaction and user-defined analytical requirements.
+This repository is the official Pytorch implementation code of our <strong>"LC Agent: Towards AI-Driven Recommendation of Liquid Chromatography Conditions for Chemical Reactions - Youngchun Kwon, Hyukju Kwon, Jinju Park, Youn-Suk Choi, and Seokho
+Kang".</strong> Our LC Agent system is an LLM-based multi-agent framework that automatically recommends reaction-level LC conditions given a chemical reaction and user-defined analytical requirements.
 
 <br/>
 <br/>
@@ -48,14 +44,14 @@ Kang".</strong> Our LC–MS Agent system is an LLM-based multi-agent framework t
 
 ## Abstract 
 
-Liquid Chromatography–Mass Spectrometry (LC–MS) is a foundational tool for the identification and monitoring of chemical compounds. However, its application to complex chemical reactions remains challenging, as analytical methods optimized for individual compounds often fail to capture the full scope of a reaction. The difficulty lies in establishing LC–MS conditions that achieve simultaneous detection and chromatographic resolution for multiple reactants and products with diverse physicochemical properties. In this work, we present a large language model (LLM)-based multi-agent system designed to recommend LC–MS conditions for comprehensive chemical reaction analysis. The agent system comprises multiple sub-agents that are context-engineered to be chemistry-aware and to perform specific functional roles that an analytical chemist would perform when determining the LC–MS conditions, emulating the decision-making process of an analytical chemist. Given a chemical reaction and user-defined analytical requirements in natural language, the system autonomously searches relevant literature, reasons over compound properties, and proposes plausible LC–MS conditions that can detect all reaction components within a single analytical run. We demonstrate its effectiveness through a case study on organic electronic materials, confirming that the recommended LC–MS conditions are highly suitable for a diverse set of chemical reactions.
+Liquid Chromatography (LC) is a foundational tool for the identification and monitoring of chemical compounds. However, its application to complex chemical reactions remains challenging, as analytical methods optimized for individual compounds often fail to capture the full scope of a reaction. The difficulty lies in establishing LC conditions that achieve simultaneous detection and chromatographic resolution for multiple reactants and products with diverse physicochemical properties. In this work, we investigate the capability of large language models (LLMs) in agentic LC condition recommendation for comprehensive chemical reaction analysis. We present an LLM-based multi-agent system that comprises multiple sub-agents that are context-engineered to perform specific functional roles that an analytical chemist would perform when determining the LC conditions, emulating the decision-making process of an analytical chemist. Given a chemical reaction and user-defined analytical requirements in natural language, the system autonomously searches relevant literature, reasons over compound properties, and proposes plausible LC conditions that can detect all reaction components within a single analytical run. We demonstrate its effectiveness through a case study on organic electronic materials, confirming that the recommended LC conditions are highly suitable for a diverse set of chemical reactions.
 
 ---
 
 ## User Interface
 
-The LC–MS Agent provides a web-based interface for interactive reaction analysis and report generation.
-The left panel enables conversational interaction with the agent, while the right panel displays the generated LC–MS recommendation report.
+The LC Agent provides a web-based interface for interactive reaction analysis and report generation.
+The left panel enables conversational interaction with the agent, while the right panel displays the generated LC recommendation report.
 
 <div align="center">
 
@@ -131,7 +127,7 @@ You can then:
 
 - Input a chemical reaction  
 - Specify analytical requirements  
-- Generate LC–MS condition recommendations  
+- Generate LC condition recommendations  
 
 ### **Step 4. View the Generated Report**
 

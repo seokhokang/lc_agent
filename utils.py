@@ -22,23 +22,23 @@ def json_to_str(x):
 SCHEMA = {
     "generate": [
         "Ref","Column","Mobile_Phase","Flow_Rate","Injection_Volume",
-        "Elution", "Detector", "MS_Parameters", "Retention_Time", "Notes"
+        "Elution", "Detector", "Retention_Time", "Notes"
     ],
     "web_search": [
         "Ref","Column","Mobile_Phase","Flow_Rate","Injection_Volume",
-        "Elution", "Detector", "MS_Parameters", "Retention_Time", "Notes"
+        "Elution", "Detector", "Retention_Time", "Notes"
     ],
     "scholarly_search": [
         "Ref","Column","Mobile_Phase","Flow_Rate","Injection_Volume",
-        "Elution", "Detector", "MS_Parameters", "Retention_Time", "Notes"
+        "Elution", "Detector", "Retention_Time", "Notes"
     ],
     "integrate": [
         "Ref","Column","Mobile_Phase","Flow_Rate","Injection_Volume",
-        "Elution", "Detector", "MS_Parameters", "Retention_Time", "Notes"
+        "Elution", "Detector", "Retention_Time", "Notes"
     ],
     "evolve": [
         "Ref","Column","Mobile_Phase","Flow_Rate","Injection_Volume",
-        "Elution", "Detector", "MS_Parameters", "Retention_Time", "Notes"
+        "Elution", "Detector", "Retention_Time", "Notes"
     ],
 
     "metareview": ["Rank", "Notes"],

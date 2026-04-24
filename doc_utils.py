@@ -299,7 +299,7 @@ def get_chunk(text, query, chunk_size=100, stride=50, padding=25, thr1=200, thr2
     chunk_indices = np.array(chunk_indices)
     max_score_1 = np.max(chunk_indices[:,1])
     max_score_2 = np.max(chunk_indices[:,2])
-    #print(max_score_1, max_score_2)
+    
     if max_score_1 < 0.5 or max_score_2 < 5:
         return None 
     

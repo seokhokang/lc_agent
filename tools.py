@@ -29,7 +29,7 @@ tavily_client = TavilyClient()
 
 @tool
 def web_search_tool(query: str):
-    """Search the web to retrieve LC–MS related content for the given query."""
+    """Search the web to retrieve LC related content for the given query."""
 
     search_result = tavily_client.search(
         query = query,
@@ -50,7 +50,7 @@ def google_search(query: str, k = 5) -> list:
 
 @tool
 def scholarly_search_tool(query: str):
-    """Search scholarly articles containing LC–MS related content for the given query."""
+    """Search scholarly articles containing LC related content for the given query."""
 
     with google_search_api_lock:
         search_result = google_search(query)
@@ -64,7 +64,7 @@ def scholarly_search_tool(query: str):
 
 @tool
 def extraction_tool(url: str, query: str):
-    """Extract LC–MS-related context associated with the given query from the provided URL."""
+    """Extract LC-related context associated with the given query from the provided URL."""
 
     # Google CSE
     ## link.springer.com/article/*
